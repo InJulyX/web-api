@@ -14,6 +14,8 @@ namespace Web.Model
             CreateMap<LoginLog, LoginLogVo>();
             // 操作日志
             CreateMap<OperaLog, OperaLogVo>();
+            // 系统用户
+            CreateMap<SysUser, SysUserVo>();
         }
     }
 }

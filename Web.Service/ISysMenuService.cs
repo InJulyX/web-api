@@ -54,6 +54,6 @@ namespace Web.Service
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        IEnumerable<string> GetPermissionListByUserId(long? userId);
+        IEnumerable<string> GetPermissionListByUserId(long userId);
     }
 }

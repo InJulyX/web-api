@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Web.Model;
 using Web.Model.Database;
+using Web.Model.VO;
 using Web.Repository;
 using Web.Service;
 
@@ -24,6 +25,11 @@ namespace Web.Api.Controllers.System
             _sysRoleService = sysRoleService;
         }
 
+        /// <summary>
+        ///     分页查询角落列表
+        /// </summary>
+        /// <param name="sysRole"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("list")]
         public AjaxResult<IEnumerable<SysRole>> GetSysRoleListToPage(SysRole sysRole)
@@ -32,12 +38,17 @@ namespace Web.Api.Controllers.System
             return AjaxResult<IEnumerable<SysRole>>.Success(item1, item2);
         }
 
+        /// <summary>
+        ///     查询角色详细
+        /// </summary>
+        /// <param name="sysRoleId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{sysRoleId}")]
-        public AjaxResult<object> GetSysRole(long sysRoleId)
+        public AjaxResult<SysRoleVo> GetSysRole(long sysRoleId)
         {
-            var s1 = _sysRoleRepository.GetSysRoleById(sysRoleId);
-            return AjaxResult<object>.Success(s1);
+            var data = _sysRoleService.GetSysRoleById(sysRoleId);
+            return AjaxResult<SysRoleVo>.Success(data);
         }
 
         [HttpPut]

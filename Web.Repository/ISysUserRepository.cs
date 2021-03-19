@@ -5,10 +5,26 @@ namespace Web.Repository
 {
     public interface ISysUserRepository
     {
+        /// <summary>
+        ///     用户查询
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
         SysUser GetUser(SysUser sysUser);
-        IEnumerable<SysUser> GetUserList(int pageNum, int pageSize, SysUser sysUser, ref int total);
-        int Insert(SysUser sysUser);
-        long InsertToResultId(SysUser sysUser);
-        SysUser GetSysUserById(long id);
+
+        /// <summary>
+        ///     添加用户并返回用户ID
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        long InsertSysUserReturnId(SysUser sysUser);
+
+        /// <summary>
+        ///     分页查询用户列表
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        IEnumerable<SysUser> GetSysUserListToPage(SysUser sysUser, ref int count);
     }
 }

@@ -1,26 +1,22 @@
-﻿using Web.Common;
+﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
+using Web.Common;
 using Web.Model.Database;
+using Web.Model.VO;
 using Web.Repository;
 
 namespace Web.Service.impl
 {
     public class SysUserService : ISysUserService
     {
+        private readonly IMapper _mapper;
         private readonly ISysUserRepository _sysUserRepository;
 
-        public SysUserService(ISysUserRepository sysUserRepository)
+        public SysUserService(ISysUserRepository sysUserRepository, IMapper mapper)
         {
             _sysUserRepository = sysUserRepository;
-        }
-
-        /// <summary>
-        ///     根据用户名查询用户信息
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public SysUser GetSysUserByUserName(string username)
-        {
-            return _sysUserRepository.GetUser(new SysUser {Username = username});
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -28,9 +24,10 @@ namespace Web.Service.impl
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public SysUser GetSysUserByUserId(long? id)
+        public SysUserVo GetSysUserByUserId(long id)
         {
-            return _sysUserRepository.GetUser(new SysUser {Id = id});
+            var sysUser = _sysUserRepository.GetUser(new SysUser {Id = id});
+            return _mapper.Map<SysUserVo>(sysUser);
         }
 
         /// <summary>
@@ -39,13 +36,27 @@ namespace Web.Service.impl
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public SysUser Login(string username, string password)
+        public SysUserVo Login(string username, string password)
         {
-            return _sysUserRepository.GetUser(new SysUser
+            var sysUser = new SysUser
             {
                 Username = username,
                 Password = StrHash.GetMd5Hash32(password)
-            });
+            };
+            var data = _sysUserRepository.GetUser(sysUser);
+            return _mapper.Map<SysUserVo>(data);
+        }
+
+        /// <summary>
+        ///     分页查询用户列表
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        public Tuple<int, IEnumerable<SysUserVo>> GetSysUserListToPage(SysUser sysUser)
+        {
+            var count = 0;
+            var data = _sysUserRepository.GetSysUserListToPage(sysUser, ref count);
+            return new Tuple<int, IEnumerable<SysUserVo>>(count, _mapper.Map<IEnumerable<SysUserVo>>(data));
         }
     }
 }

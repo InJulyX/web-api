@@ -17,7 +17,7 @@ namespace Web.Api.Controllers.Monitor
 
         [HttpGet]
         [Route("list")]
-        public AjaxResult<object> GetListToPage(int pageNum, int pageSize, VInfo info)
+        public AjaxResult<object> GetDatabaseListToPage(int pageNum, int pageSize, VInfo info)
         {
             return _viewService.GetVInfoListToPage(pageNum, pageSize, info);
         }

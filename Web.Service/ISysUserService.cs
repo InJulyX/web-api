@@ -1,29 +1,32 @@
-﻿using Web.Model.Database;
+﻿using System;
+using System.Collections.Generic;
+using Web.Model.Database;
+using Web.Model.VO;
 
 namespace Web.Service
 {
     public interface ISysUserService
     {
         /// <summary>
-        ///     根据用户名查询用户信息
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        SysUser GetSysUserByUserName(string username);
-
-        /// <summary>
         ///     根据用户ID查询用户信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        SysUser GetSysUserByUserId(long? id);
+        SysUserVo GetSysUserByUserId(long id);
 
         /// <summary>
         ///     根据用户名密码查询用户信息
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param name="username">用户名</param>
+        /// <param name="password">密码</param>
         /// <returns></returns>
-        SysUser Login(string username, string password);
+        SysUserVo Login(string username, string password);
+
+        /// <summary>
+        ///     分页查询用户列表
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        Tuple<int, IEnumerable<SysUserVo>> GetSysUserListToPage(SysUser sysUser);
     }
 }

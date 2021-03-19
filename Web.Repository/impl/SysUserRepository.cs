@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SqlSugar;
 using Web.Common;
 using Web.Model.Database;
 
@@ -6,6 +7,11 @@ namespace Web.Repository.impl
 {
     public class SysUserRepository : ISysUserRepository
     {
+        /// <summary>
+        ///     用户查询
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
         public SysUser GetUser(SysUser sysUser)
         {
             using var db = SqlSugarHelper.GetInstance();
@@ -20,25 +26,12 @@ namespace Web.Repository.impl
             return result;
         }
 
-        public IEnumerable<SysUser> GetUserList(int pageNum, int pageSize, SysUser sysUser, ref int total)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            var result = db.Queryable<SysUser>()
-                .IgnoreColumns(it => new {it.Password})
-                .ToPageList(pageNum, pageSize, ref total);
-            return result;
-        }
-
-        public int Insert(SysUser sysUser)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            var rows = db.Insertable(sysUser)
-                .IgnoreColumns(true)
-                .ExecuteCommand();
-            return rows;
-        }
-
-        public long InsertToResultId(SysUser sysUser)
+        /// <summary>
+        ///     添加用户并返回用户ID
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        public long InsertSysUserReturnId(SysUser sysUser)
         {
             var db = SqlSugarHelper.GetInstance();
             var rows = db.Insertable(sysUser)
@@ -47,12 +40,19 @@ namespace Web.Repository.impl
             return rows;
         }
 
-        public SysUser GetSysUserById(long id)
+        /// <summary>
+        ///     分页查询用户列表
+        /// </summary>
+        /// <param name="sysUser"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public IEnumerable<SysUser> GetSysUserListToPage(SysUser sysUser, ref int count)
         {
             var db = SqlSugarHelper.GetInstance();
             var result = db.Queryable<SysUser>()
-                .Where(it => it.Id == id)
-                .First();
+                .WhereIF(sysUser.Id == null, it => it.Id > 0)
+                .OrderBy(it => it.CreateTime, OrderByType.Desc)
+                .ToPageList(sysUser.PageNum, sysUser.PageSize, ref count);
             return result;
         }
     }

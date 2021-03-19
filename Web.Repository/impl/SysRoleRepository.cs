@@ -15,53 +15,11 @@ namespace Web.Repository.impl
             return result;
         }
 
-        public List<string> GetSysRoleNameByUserId(long? userId)
-        {
-            var db = SqlSugarHelper.GetInstance();
-
-            var result = db.Queryable<SysRole, SysUserRole, SysUser>((sr, sur, su) => new JoinQueryInfos(
-                        JoinType.Left, sr.Id == sur.RoleId,
-                        JoinType.Left, sur.UserId == su.Id
-                    ))
-                    .Where((sr, sur, su) => su.Id == userId)
-                    .Select(sr => sr.RoleStr)
-                    .ToList()
-                ;
-            return result;
-        }
-
-        public List<SysRole> GetSysRoleList(int pageNum, int pageSize, SysRole sysRole)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            var result = db.Queryable<SysRole>()
-                .Where(it => it.Id > 0)
-                .ToPageList(pageNum, pageSize);
-            return result;
-        }
-
-        public SysRole GetSysRoleById(long id)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            var result = db.Queryable<SysRole>()
-                .Where(it => it.Id == id)
-                .First();
-            return result;
-        }
-
         public int Update(SysRole sysRole)
         {
             var db = SqlSugarHelper.GetInstance();
             var rows = db.Updateable(sysRole)
                 .IgnoreColumns(it => new {it.CreateTime})
-                .IgnoreColumns(true)
-                .ExecuteCommand();
-            return rows;
-        }
-
-        public int Insert(SysRole sysRole)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            var rows = db.Insertable(sysRole)
                 .IgnoreColumns(true)
                 .ExecuteCommand();
             return rows;
@@ -90,13 +48,12 @@ namespace Web.Repository.impl
             var db = SqlSugarHelper.GetInstance();
 
             var result = db.Queryable<SysRole, SysUserRole, SysUser>((sr, sur, su) => new JoinQueryInfos(
-                        JoinType.Left, sr.Id == sur.RoleId,
-                        JoinType.Left, sur.UserId == su.Id
-                    ))
-                    .Where((sr, sur, su) => su.Id == userId)
-                    .Select(sr => sr.RoleStr)
-                    .ToList()
-                ;
+                    JoinType.Left, sr.Id == sur.RoleId,
+                    JoinType.Left, sur.UserId == su.Id
+                ))
+                .Where((sr, sur, su) => su.Id == userId)
+                .Select(sr => sr.RoleStr)
+                .ToList();
             return result;
         }
 
@@ -112,6 +69,20 @@ namespace Web.Repository.impl
             return db.Queryable<SysRole>()
                 .Where(it => it.Id > 0)
                 .ToPageList(sysRole.PageNum, sysRole.PageSize, ref count);
+        }
+
+        /// <summary>
+        ///     单条查询
+        /// </summary>
+        /// <param name="sysRole"></param>
+        /// <returns></returns>
+        public SysRole GetSysRole(SysRole sysRole)
+        {
+            var db = SqlSugarHelper.GetInstance();
+            var result = db.Queryable<SysRole>()
+                .WhereIF(sysRole.Id != 0, it => it.Id == sysRole.Id)
+                .First();
+            return result;
         }
     }
 }

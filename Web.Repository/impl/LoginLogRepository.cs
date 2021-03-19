@@ -17,7 +17,7 @@ namespace Web.Repository.impl
             return result;
         }
 
-        public IEnumerable<LoginLog> SelectListToPage(int pageNum, int pageSize, LoginLog loginLog, ref int total)
+        public IEnumerable<LoginLog> GetLoginLogListToPage(LoginLog loginLog, ref int count)
         {
             var db = SqlSugarHelper.GetInstance();
             var result = db.Queryable<LoginLog>()
@@ -27,22 +27,8 @@ namespace Web.Repository.impl
                 .WhereIF(loginLog.BeginTime != null, it => it.LoginTime >= loginLog.BeginTime)
                 .WhereIF(loginLog.EndTime != null, it => it.LoginTime <= loginLog.EndTime)
                 .OrderBy(it => it.Id, OrderByType.Desc)
-                .ToPageList(pageNum, pageSize, ref total);
+                .ToPageList(loginLog.PageNum, loginLog.PageSize, ref count);
             return result;
-        }
-
-        public IEnumerable<LoginLog> GetLoginLogListToPage(LoginLog loginLog, ref int count)
-        {
-            var db = SqlSugarHelper.GetInstance();
-            return
-                db.Queryable<LoginLog>()
-                    .WhereIF(!string.IsNullOrEmpty(loginLog.Username), it => it.Username == loginLog.Username)
-                    .WhereIF(loginLog.Status != null, it => it.Status == loginLog.Status)
-                    .WhereIF(!string.IsNullOrEmpty(loginLog.ClientIp), it => it.ClientIp.Contains(loginLog.ClientIp))
-                    .WhereIF(loginLog.BeginTime != null, it => it.LoginTime >= loginLog.BeginTime)
-                    .WhereIF(loginLog.EndTime != null, it => it.LoginTime <= loginLog.EndTime)
-                    .OrderBy(it => it.Id, OrderByType.Desc)
-                    .ToPageList(loginLog.PageNum, loginLog.PageSize, ref count);
         }
     }
 }

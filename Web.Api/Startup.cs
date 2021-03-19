@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Autofac;
 using CSRedis;
@@ -86,6 +87,7 @@ namespace Web.Api
             // RedisHelper.Set("testKey", "testValue");
 
             #endregion
+            
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

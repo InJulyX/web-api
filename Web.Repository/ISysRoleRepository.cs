@@ -6,11 +6,7 @@ namespace Web.Repository
     public interface ISysRoleRepository
     {
         List<SysRole> GetSysRoleList();
-        List<string> GetSysRoleNameByUserId(long? userId);
-        List<SysRole> GetSysRoleList(int pageNum, int pageSize, SysRole sysRole);
-        SysRole GetSysRoleById(long id);
         int Update(SysRole sysRole);
-        int Insert(SysRole sysRole);
         long InsertToResultId(SysRole sysRole);
         int DeleteByRoleId(long roleId);
         IEnumerable<string> GetSysRoleNameListByUserId(long userId);
@@ -22,5 +18,12 @@ namespace Web.Repository
         /// <param name="count"></param>
         /// <returns></returns>
         IEnumerable<SysRole> GetSysRoleListToPage(SysRole sysRole, ref int count);
+
+        /// <summary>
+        ///     单条查询
+        /// </summary>
+        /// <param name="sysRole"></param>
+        /// <returns></returns>
+        SysRole GetSysRole(SysRole sysRole);
     }
 }

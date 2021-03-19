@@ -40,7 +40,11 @@ namespace Web.Common
                 // Console.WriteLine("SQL 结束时间: "+DateTime.Now.ToString("yyyy年MM月dd日 HH时mm分ss秒fff毫秒"));
             };
             // sql错误事件
-            db.Aop.OnError = exp => { Console.WriteLine(exp.Sql); };
+            db.Aop.OnError = exp =>
+            {
+                Console.WriteLine(exp.Sql);
+                Console.WriteLine(exp);
+            };
             return db;
         }
     }

@@ -20,7 +20,7 @@ namespace Web.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>().UseNLog();
-                    webBuilder.ConfigureLogging((hostingContext, builder) =>
+                    webBuilder.ConfigureLogging((_, builder) =>
                     {
                         builder.ClearProviders();
                         builder.AddNLog();

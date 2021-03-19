@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Web.Common;
 using Web.Model;
 using Web.Model.Database;
 using Web.Model.VO;

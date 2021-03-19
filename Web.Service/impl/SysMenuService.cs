@@ -50,7 +50,7 @@ namespace Web.Service.impl
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public IEnumerable<string> GetPermissionListByUserId(long? userId)
+        public IEnumerable<string> GetPermissionListByUserId(long userId)
         {
             var sysUser = _sysUserService.GetSysUserByUserId(userId);
             var permissionList = RedisHelper.Get<IEnumerable<string>>("permission:" + sysUser.Username);

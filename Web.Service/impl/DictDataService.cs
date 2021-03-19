@@ -11,10 +11,10 @@ namespace Web.Service.impl
     public class DictDataService : IDictDataService
     {
         private readonly IDictionaryDataRepository _dictionaryDataRepository;
-        private readonly ILogger<IDictDataService> _logger;
+        private readonly ILogger<DictDataService> _logger;
         private readonly IRedisHelper _redisClient;
 
-        public DictDataService(IDictionaryDataRepository dictionaryDataRepository, ILogger<IDictDataService> logger,
+        public DictDataService(IDictionaryDataRepository dictionaryDataRepository, ILogger<DictDataService> logger,
             IRedisHelper redisClient)
         {
             _dictionaryDataRepository = dictionaryDataRepository;
